@@ -1,8 +1,8 @@
 #############################################################################
-#
 # Copyright (c) 2009 Victorian Partnership for Advanced Computing Ltd and
 # Contributors.
 # All Rights Reserved.
+# Copyright (c) 2017 TU Munich, Dimitri Vorona <vorona@in.tum.de>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
