@@ -26,7 +26,6 @@ from urllib import parse as urlparse
 import urllib.request, urllib.error, urllib.parse, urllib.request, urllib.parse, urllib.error
 import logging
 from .exceptions import WAYFException
-from ipdb import set_trace
 
 log = logging.getLogger('arcs.shibboleth.client')
 
@@ -143,7 +142,7 @@ class DS(FormHandler):
         :param data: the form data as a dictionary
         :param res: the response object
         """
-        log.info('Submitting form to wayf')
+        log.debug('Submitting form to wayf')
         headers = {
         "Referer": res.url
         }
@@ -192,7 +191,7 @@ class WAYF(FormHandler):
         :param data: the form data as a dictionary
         :param res: the response object
         """
-        log.info('Submitting form to wayf')
+        log.debug('Submitting form to wayf')
         headers = {
         "Referer": res.url
         }
@@ -248,14 +247,14 @@ class IdPFormLogin(FormHandler):
         cm = self.cm
         data = self.data
         url = urlparse.urljoin(res.url, data['form']['action'])
-        log.info("Form Authentication from: %s" % url)
+        log.debug("Form Authentication from: %s" % url)
         idp_data[self.username_field] = cm.get_username()
         idp_data[self.password_field] = cm.get_password()
         idp_data['donotcache'] = 1
         idp_data['_eventId_proceed'] = ""
         data = urllib.parse.urlencode(idp_data).encode()
         request = urllib.request.Request(url, data=data)
-        log.info('Submitting login form')
+        log.debug('Submitting login form')
         log.debug("POST: %s?%s" % (request.get_full_url(), data.decode()))
         response = opener.open(request)
         return request, response
@@ -281,7 +280,7 @@ class IdPSPForm(FormHandler):
         :param data: the form data as a dictionary
         :param res: the response object
         """
-        log.info('Submitting IdP SAML form')
+        log.debug('Submitting IdP SAML form')
         headers = {
         "Referer": res.url
         }
@@ -310,7 +309,7 @@ class IdPSPFormRelayState(FormHandler):
         :param data: the form data as a dictionary
         :param res: the response object
         """
-        log.info('Submitting IdP SAML form')
+        log.debug('Submitting IdP SAML form')
         headers = {
         "Referer": res.url
         }

@@ -19,7 +19,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 ##############################################################################
-
+from http.client import HTTPException
 from urllib.parse import urlsplit, urljoin
 import urllib.request, urllib.error, urllib.parse
 from urllib.request import HTTPCookieProcessor, HTTPRedirectHandler
@@ -44,7 +44,6 @@ class ShibbolethHandler(HTTPRedirectHandler, HTTPCookieProcessor):
     def http_error_302(self, req, fp, code, msg, headers):
         if 'location' in headers:
             newurl = headers.get_all('location')[0]
-            print('location: ' + newurl)
         elif 'uri' in headers:
             newurl = headers.get_all('uri')[0]
         if newurl == 'https://www.moodle.tum.de/':
@@ -152,11 +151,14 @@ class Shibboleth(shib_interface):
         """
         self.__listeners.append(listener)
 
-    def openurl(self, url):
+    def readurl(self, url):
         request = urllib.request.Request(url)
+        self.cookiejar.add_cookie_header(request)
         response = self.opener.open(request)
         self.cookiejar.extract_cookies(response, request)
-        return response
+        if response.code == 200:
+            return response.read().decode()
+        raise HTTPException('Request to {} returned status {}'.format(url, response.code))
 
     def initurl(self, url=None):
         """

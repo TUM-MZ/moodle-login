@@ -87,7 +87,7 @@ def main(*args):
         cj.load()
 
     shibboleth = Shibboleth(idp, c, cj)
-    shibboleth.openurl(sp)
+    shibboleth.readurl(sp)
     print(("Successfully authenticated to %s" % sp))
 
     print(cj)
